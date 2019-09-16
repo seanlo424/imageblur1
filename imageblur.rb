@@ -11,7 +11,7 @@ class Image
     end
   end
 
-  def blur 
+  def blur_helper 
   	bright_pixels = []
   	@image.each_with_index do |row, row_index|
   		row.each_with_index do |pixel, pixel_index| 
@@ -23,13 +23,25 @@ class Image
 
   	bright_pixels.each do |location|
   		@image[location[0]][location[1] + 1] = 1 if location[1] + 1 <= @image[location[0]].length - 1
-  		@image[location[0]][location[1] - 1] = 1 if location[1 - 1 >= 0]
+  		@image[location[0]][location[1] - 1] = 1 if location[1] - 1 >= 0
   		@image[location[0] + 1][location[1]] = 1 if location[0] + 1 <= @image.length - 1
   		@image[location[0] - 1][location[1]] = 1 if location[0] - 1 >= 0
   	end
-
-
   end
+
+  def blur (dis)
+    dis.times do
+      blur_helper
+    end
+  end
+
+  # def distance (x1, y1, x2, y2)
+  #   horizontal_distance = (x2 - x1).abs
+  #   vertical_distance = (y2 - y1).abs
+  #   horizontal_distance + vertical_distance
+  # end
+
+
 end
 image = Image.new([
 [0, 0, 0, 0],
@@ -37,6 +49,7 @@ image = Image.new([
 [0, 0, 0, 1],
 [0, 0, 0, 0]
 ])
-image.bright_pixels!(2)
+
+image.blur(2)
 image.output_image
 
